@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 
 module.exports = merge(common, {
   mode: 'development',
-
+  devtool: 'inline-source-map',
   // webpack 5 comes with devServer which loads in development mode
   devServer: {
     port,
@@ -20,5 +20,4 @@ module.exports = merge(common, {
     hot: true,
     contentBase: path.join(__dirname, '/dist'),
   },
-  target: 'web',
 });
