@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "sourceMap": true,
+        "paths": {
+            //Update this path as necessary
+            "~/*": ["src/*"]
+        }
+    },
+    //Add any build/compiled folders here to stop vscode searching those
+    "exclude": ["node_modules", "dist"]
+}
