@@ -1,9 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+
 module.exports = {
-  // Rules of how webpack will take our files, complie & bundle them for the browser
-  // entry: ['core-js/stable', path.resolve(__dirname, 'src/', 'index.js')],
+  // Rules of how webpack will take our files, compile & bundle them for the browser
+  entry: ['core-js/stable', path.resolve(__dirname, 'src/', 'index.js')],
+  target: 'web',
   module: {
     rules: [
       {
@@ -30,15 +32,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
       filename: 'index.html',
-      inject: false,
     }),
   ],
 
-  // Where files should be sent once they are bundled
-  output: {
-    path: path.join(__dirname, '/dist'),
-    filename: 'index.bundle.js',
-    publicPath: '/',
-    clean: true,
-  },
+
 };
