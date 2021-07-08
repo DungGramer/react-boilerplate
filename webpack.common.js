@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 module.exports = {
-  // Rules of how webpack will take our files, complie & bundle them for the browser
+  // Rules of how webpack will take our files, compile & bundle them for the browser
   entry: ['core-js/stable', path.resolve(__dirname, 'src/', 'index.js')],
   target: 'web',
   module: {
