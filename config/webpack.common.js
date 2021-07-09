@@ -41,7 +41,7 @@ module.exports = {
           fallback: 'file-loader',
           limit: sizeLimit,
           // outputPath: 'assets/fonts',
-          name: formatFileName,
+          name: 'assets/fonts/' + formatFileName,
           esModule: false,
         },
       },
