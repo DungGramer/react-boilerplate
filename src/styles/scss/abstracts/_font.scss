@@ -3,7 +3,7 @@
 @mixin font-face($name, $file, $weight: normal, $style: normal) {
   @font-face {
     font-family: '#{$name}';
-    src: url('/public/assets/fonts/#{$file}.ttf');
+    src: url('/public/assets/fonts/#{$file}.ttf') format('truetype');
     font-weight: $weight;
     font-style: $style;
   }

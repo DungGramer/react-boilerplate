@@ -1,72 +1,68 @@
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-// style files regexes
-const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
-const sassRegex = /\.(scss|sass)$/;
-const sassModuleRegex = /\.module\.(scss|sass)$/;
+const { paths, regex, resolvePath, formatFileName, postCSS, } = require('./untils');
 
 const moduleClassName = '[name]__[local]--[hash:base64:5]';
 
-
-const sizeLimit = parseInt(
-  process.env.IMAGE_INLINE_SIZE_LIMIT || '10000',
-);
-const mediaPath = 'assets/images/[name].[hash:8].[ext]';
+const sizeLimit = parseInt(process.env.IMAGE_INLINE_SIZE_LIMIT || '10000');
 
 module.exports = {
   // Rules of how webpack will take our files, compile & bundle them for the browser
-  entry: ['core-js/stable', path.resolve(__dirname, 'src', 'index.js')],
+  entry: ['core-js/stable', paths.indexJS],
   target: 'web',
   module: {
     rules: [
       // File Loader
       {
-        test: [/\.avif$/],
+        test: regex.avif,
         type: 'asset/resource',
         loader: 'url-loader',
         options: {
           fallback: 'file-loader',
           limit: sizeLimit,
           mimetype: 'image/avif',
-          name: mediaPath,
+          name: formatFileName,
         },
       },
       {
-        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+        test: regex.image,
         type: 'asset/resource',
         loader: 'url-loader',
         options: {
           fallback: 'file-loader',
           limit: sizeLimit,
-          name: mediaPath,
+          name: formatFileName,
         },
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        test: regex.font,
         // type: 'asset/resource',
         loader: 'url-loader',
         options: {
           fallback: 'file-loader',
           limit: sizeLimit,
-          outputPath: 'assets/fonts/',
+          // outputPath: 'assets/fonts',
+          name: formatFileName,
           esModule: false,
         },
       },
       {
-        test: /\.svg$/,
+        test: regex.svg,
         type: 'asset/inline', // Load svg inside HTML
       },
 
       {
-        test: /\.(js|jsx)$/,
+        test: regex.js,
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            configFile: resolvePath("config/babel.config.js"),
+          },
+        },
       },
       {
-        test: cssRegex,
-        exclude: cssModuleRegex,
+        test: regex.css,
+        exclude: regex.cssModule,
         use: [
           'style-loader',
           {
@@ -76,12 +72,12 @@ module.exports = {
               sourceMap: true,
             },
           },
-          'postcss-loader',
+          postCSS,
         ],
         sideEffects: true,
       },
       {
-        test: cssModuleRegex,
+        test: regex.cssModule,
         use: [
           'style-loader',
           {
@@ -95,12 +91,12 @@ module.exports = {
               },
             },
           },
-          'postcss-loader',
+          postCSS,
         ],
       },
       {
-        test: sassRegex,
-        exclude: sassModuleRegex,
+        test: regex.sass,
+        exclude: regex.sassModule,
         use: [
           'style-loader',
           {
@@ -110,13 +106,13 @@ module.exports = {
               importLoaders: 3,
             },
           },
-          'postcss-loader',
+          postCSS,
           'sass-loader',
         ],
         sideEffects: true,
       },
       {
-        test: sassModuleRegex,
+        test: regex.sassModule,
         use: [
           'style-loader',
           {
@@ -130,7 +126,7 @@ module.exports = {
               },
             },
           },
-          'postcss-loader',
+          postCSS,
           'sass-loader',
         ],
       },
@@ -138,16 +134,17 @@ module.exports = {
   },
 
   resolve: {
-    modules: ['node_modules', './src'],
+    modules: ['node_modules', '../src'],
     extensions: ['*', '.js', '.jsx', '.scss'],
     alias: {
-      '~': path.resolve(__dirname, 'src/'),
+      '~': paths.root,
+      '@components': resolvePath('src/components'),
     },
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'public', 'index.html'),
+      template: paths.indexHTML,
       filename: 'index.html',
     }),
   ],

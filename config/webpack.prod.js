@@ -10,10 +10,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
-const sassRegex = /\.(scss|sass)$/;
-const sassModuleRegex = /\.module\.(scss|sass)$/;
+const { paths, regex, postCSS, formatFileName, resolvePath } = require('./untils');
 
 module.exports = merge(common, {
   mode: 'production',
@@ -24,7 +21,7 @@ module.exports = merge(common, {
         {},
         {
           inject: true,
-          template: path.resolve(__dirname, 'public', 'index.html'),
+          template: paths.indexHTML,
         },
         {
           minify: {
@@ -46,11 +43,12 @@ module.exports = merge(common, {
       filename: 'assets/css/[name].[contenthash:8].css',
       chunkFilename: 'assets/css/[id].[contenthash:8].css',
     }),
-    // new CopyPlugin({
-    //   patterns: [
-    //     { from: 'public/assets/images', to: 'assets/images' },
-    //   ],
-    // }),
+    new CopyPlugin({
+      patterns: [
+        // { from: 'public/assets/images', to: 'assets/images' },
+        { from: 'public/favicon.ico', to: '' },
+      ],
+    }),
     new CleanWebpackPlugin(),
   ],
   devtool: 'source-map',
@@ -60,21 +58,21 @@ module.exports = merge(common, {
 
   /// There will be one main bundle, and one file per asynchronous chunk.
   output: {
-    path: path.join(__dirname, 'dist'),
-    publicPath: path.join(__dirname, 'dist'),
+    path: paths.dist,
+    publicPath: paths.dist,
     filename: '[name].[contenthash:8].js',
     clean: true,
   },
   module: {
     rules: [
       {
-        test: cssRegex,
-        exclude: cssModuleRegex,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        test: regex.css,
+        exclude: regex.cssModule,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', postCSS],
       },
       {
-        test: cssModuleRegex,
-        exclude: cssRegex,
+        test: regex.cssModule,
+        exclude: regex.css,
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -83,17 +81,23 @@ module.exports = merge(common, {
               sourceMap: false,
             },
           },
+          postCSS,
         ],
       },
       {
-        test: sassRegex,
-        exclude: sassModuleRegex,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        test: regex.sass,
+        exclude: regex.sassModule,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          postCSS,
+          'sass-loader',
+        ],
         sideEffects: true,
       },
       {
-        test: sassModuleRegex,
-        exclude: sassRegex,
+        test: regex.sassModule,
+        exclude: regex.sass,
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -102,6 +106,7 @@ module.exports = merge(common, {
               sourceMap: false,
             },
           },
+          postCSS,
           'sass-loader',
         ],
       },
@@ -109,10 +114,6 @@ module.exports = merge(common, {
   },
   optimization: {
     minimize: true,
-    minimizer: [
-      // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
-      // `...`,
-      new CssMinimizerPlugin(),
-    ],
+    minimizer: [new CssMinimizerPlugin()],
   },
 });

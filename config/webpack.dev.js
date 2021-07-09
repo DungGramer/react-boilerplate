@@ -1,8 +1,8 @@
-const path = require('path');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { paths } = require('./untils.js');
 const port = process.env.PORT || 3000;
 
 module.exports = merge(common, {
@@ -18,7 +18,7 @@ module.exports = merge(common, {
     open: true,
     compress: true,
     hot: true,
-    contentBase: path.join(__dirname, 'public'),
+    contentBase: paths.public,
     watchContentBase: true,
   },
 
