@@ -9,7 +9,14 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'production',
-  plugins: [new MiniCssExtractPlugin(), new CleanWebpackPlugin()],
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].[hash].css',
+      chunkFilename: '[id].[hash].css',
+    }),
+    ,
+    new CleanWebpackPlugin(),
+  ],
   devtool: 'source-map',
   // Where files should be sent once they are bundled
   output: {
