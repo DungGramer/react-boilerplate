@@ -17,6 +17,7 @@ const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 module.exports = merge(common, {
   mode: 'production',
+  target: ['web', 'es5'],
   plugins: [
     new HtmlWebpackPlugin(
       Object.assign(
@@ -45,11 +46,11 @@ module.exports = merge(common, {
       filename: 'assets/css/[name].[contenthash:8].css',
       chunkFilename: 'assets/css/[id].[contenthash:8].css',
     }),
-    new CopyPlugin({
-      patterns: [
-        { from: 'public/assets', to: 'assets' },
-      ],
-    }),
+    // new CopyPlugin({
+    //   patterns: [
+    //     { from: 'public/assets/images', to: 'assets/images' },
+    //   ],
+    // }),
     new CleanWebpackPlugin(),
   ],
   devtool: 'source-map',

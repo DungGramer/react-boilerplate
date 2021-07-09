@@ -1,0 +1,12 @@
+//* ---- Font Imports ---- */
+
+@mixin font-face($name, $file, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: '#{$name}';
+    src: url('/public/assets/fonts/#{$file}.ttf');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+@include font-face(OpenSans, OpenSans-Regular, normal, normal);

@@ -7,7 +7,10 @@ const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
-const imageInlineSizeLimit = parseInt(
+const moduleClassName = '[name]__[local]--[hash:base64:5]';
+
+
+const sizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || '10000',
 );
 const mediaPath = 'assets/images/[name].[hash:8].[ext]';
@@ -25,7 +28,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           fallback: 'file-loader',
-          limit: imageInlineSizeLimit,
+          limit: sizeLimit,
           mimetype: 'image/avif',
           name: mediaPath,
         },
@@ -36,10 +39,26 @@ module.exports = {
         loader: 'url-loader',
         options: {
           fallback: 'file-loader',
-          limit: imageInlineSizeLimit,
+          limit: sizeLimit,
           name: mediaPath,
         },
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        // type: 'asset/resource',
+        loader: 'url-loader',
+        options: {
+          fallback: 'file-loader',
+          limit: sizeLimit,
+          outputPath: 'assets/fonts/',
+          esModule: false,
+        },
+      },
+      {
+        test: /\.svg$/,
+        type: 'asset/inline', // Load svg inside HTML
+      },
+
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
@@ -72,7 +91,7 @@ module.exports = {
               importLoaders: 1,
               sourceMap: true,
               modules: {
-                localIdentName: '[local]--[hash:base64:5]',
+                localIdentName: moduleClassName,
               },
             },
           },
@@ -107,7 +126,7 @@ module.exports = {
               sourceMap: true,
               importLoaders: 3,
               modules: {
-                localIdentName: '[local]--[hash:base64:5]',
+                localIdentName: moduleClassName,
               },
             },
           },

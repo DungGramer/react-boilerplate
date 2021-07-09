@@ -1,17 +1,12 @@
 import { Route, Switch } from 'react-router-dom';
-import './App.css';
-import Header from './components/Header/Header';
+import './App.scss';
+import Home from './components/Home/Home';
 
-
-const Hello = () => {
-  return <h1>Hello World</h1>;
-};
 
 function App() {
   return (
     <Switch>
-      <Header />
-      <Route path="/" exact component={Hello} />
+      <Route path="/" exact component={Home} />
     </Switch>
   );
 }
