@@ -3,8 +3,6 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-
 const port = process.env.PORT || 3000;
 
 module.exports = merge(common, {
@@ -13,7 +11,6 @@ module.exports = merge(common, {
   // webpack 5 comes with devServer which loads in development mode
   devServer: {
     port,
-    watchContentBase: true,
     watchOptions: {
       ignored: /node_modules/,
     },
@@ -21,7 +18,8 @@ module.exports = merge(common, {
     open: true,
     compress: true,
     hot: true,
-    contentBase: path.join(__dirname, '/dist'),
+    contentBase: path.join(__dirname, 'public'),
+    watchContentBase: true,
   },
 
   plugins: [
@@ -30,4 +28,6 @@ module.exports = merge(common, {
       chunkFilename: '[id].css',
     }),
   ],
+
+  output: { publicPath: '/' },
 });
