@@ -1,0 +1,28 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "plugins": ["react", "prettier"],
+
+  // Set of predefined global variables
+  "env": {
+    "browser": true,
+    "node": true
+  },
+
+  "rules": {
+    "no-console": "warn",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off"
+  },
+
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

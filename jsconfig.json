@@ -2,14 +2,20 @@
   "compilerOptions": {
     "baseUrl": ".",
     "sourceMap": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "outDir": "dist",
+
+    //Update this path as necessary
     "paths": {
-      //Update this path as necessary
       "@components/*": ["src/components/*"],
       "~/*": ["src/*"]
     }
   },
+  "include": ["src/**/*"],
+
   //Add any build/compiled folders here to stop vscode searching those
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "dist"],
 
   "files.exclude": {
     "node_modules": true

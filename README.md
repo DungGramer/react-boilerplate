@@ -10,3 +10,4 @@
 + Load CSS/SCSS module
 + Minify code on Product
 + Split Webpack Dev and Product
++ Support ESLint
