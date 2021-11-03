@@ -70,24 +70,7 @@ module.exports = merge(common, {
         exclude: regex.nodeModules,
         use: [
           {
-            loader: 'esbuild-loader',
-            options: {
-              sourcemap: false,
-              minify: true,
-              implementation: esbuild,
-              minifyWhitespace: true,
-              minifyIdentifiers: true,
-              minifySyntax: true,
-              legalComments: 'none',
-            },
-          },
-          {
-            loader: 'babel-loader',
-            options: {
-              configFile: resolvePath('config/babel.config.js'),
-              sourceMaps: false,
-              inputSourceMap: false,
-            },
+            loader: 'swc-loader',
           },
         ],
       },
