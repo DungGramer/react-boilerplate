@@ -28,4 +28,9 @@ module.exports = {
     ],
   ],
   sourceType: 'unambiguous',
+  env: {
+    development: {
+      plugins: ['react-refresh/babel'],
+    },
+  }
 };

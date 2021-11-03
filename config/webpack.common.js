@@ -1,5 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { paths, regex, resolvePath, formatFileName, postCSS, } = require('./untils');
+const { paths, regex, resolvePath, formatFileName, postCSS, } = require('./utils');
 
 const moduleClassName = '[name]__[local]--[hash:base64:5]';
 
@@ -7,7 +7,7 @@ const sizeLimit = parseInt(process.env.IMAGE_INLINE_SIZE_LIMIT || '10000');
 
 module.exports = {
   // Rules of how webpack will take our files, compile & bundle them for the browser
-  entry: ['core-js/stable', paths.indexJS],
+  entry: paths.indexJS,
   target: 'web',
   module: {
     rules: [
@@ -52,7 +52,7 @@ module.exports = {
 
       {
         test: regex.js,
-        exclude: /node_modules/,
+        exclude: regex.nodeModule,
         use: {
           loader: 'babel-loader',
           options: {

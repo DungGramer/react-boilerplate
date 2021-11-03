@@ -10,7 +10,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const { paths, regex, postCSS, formatFileName, resolvePath } = require('./untils');
+const { paths, regex, postCSS } = require('./utils');
 
 module.exports = merge(common, {
   mode: 'production',
@@ -46,6 +46,7 @@ module.exports = merge(common, {
     new CopyPlugin({
       patterns: [
         // { from: 'public/assets/images', to: 'assets/images' },
+        { from: 'public/_redirects', to: '' },
         { from: 'public/favicon.ico', to: '' },
       ],
     }),
