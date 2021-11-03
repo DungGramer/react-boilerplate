@@ -1,5 +1,3 @@
-const path = require('path');
-
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 
@@ -10,15 +8,18 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const { paths, regex, postCSS } = require('./utils');
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
+const esbuild = require('esbuild');
+
+const { paths, regex, postCSS, resolvePath } = require('./utils');
 
 module.exports = merge(common, {
   mode: 'production',
-  target: ['web', 'es5'],
+  target: ['es5', 'web'],
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin(
       Object.assign(
-        {},
         {
           inject: true,
           template: paths.indexHTML,
@@ -50,9 +51,8 @@ module.exports = merge(common, {
         { from: 'public/favicon.ico', to: '' },
       ],
     }),
-    new CleanWebpackPlugin(),
   ],
-  devtool: 'source-map',
+  devtool: false,
 
   // Stop compilation early in production
   bail: false,
@@ -60,12 +60,37 @@ module.exports = merge(common, {
   /// There will be one main bundle, and one file per asynchronous chunk.
   output: {
     path: paths.dist,
-    publicPath: paths.dist,
     filename: '[name].[contenthash:8].js',
     clean: true,
   },
   module: {
     rules: [
+      {
+        test: regex.js,
+        exclude: regex.nodeModules,
+        use: [
+          {
+            loader: 'esbuild-loader',
+            options: {
+              sourcemap: false,
+              minify: true,
+              implementation: esbuild,
+              minifyWhitespace: true,
+              minifyIdentifiers: true,
+              minifySyntax: true,
+              legalComments: 'none',
+            },
+          },
+          {
+            loader: 'babel-loader',
+            options: {
+              configFile: resolvePath('config/babel.config.js'),
+              sourceMaps: false,
+              inputSourceMap: false,
+            },
+          },
+        ],
+      },
       {
         test: regex.css,
         exclude: regex.cssModule,
@@ -115,6 +140,12 @@ module.exports = merge(common, {
   },
   optimization: {
     minimize: true,
-    minimizer: [new CssMinimizerPlugin()],
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new ESBuildMinifyPlugin({
+        target: 'es2015',
+        css: true,
+      }),
+    ],
   },
 });

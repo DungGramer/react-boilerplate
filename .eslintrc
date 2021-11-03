@@ -1,28 +1,84 @@
 {
-  "parser": "babel-eslint",
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "plugin:react-hooks/recommended"
   ],
-  "plugins": ["react", "prettier"],
+  "plugins": ["react", "react-hooks", "prettier"],
 
   // Set of predefined global variables
   "env": {
     "browser": true,
+    "es2021": true,
     "node": true
-  },
-
-  "rules": {
-    "no-console": "warn",
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-uses-react": "off"
   },
 
   "settings": {
     "react": {
       "version": "detect"
     }
-  }
+  },
+
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/react-in-jsx-scope": "off",
+    "no-console": "warn",
+    "react/jsx-uses-react": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
+  },
+
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/test/**",
+    "**/__tests__/**",
+    "**/__mocks__/**",
+    "**/__fixtures__/**",
+    "**/__snapshots__/**",
+    "**/__test__/**",
+    "**/__stories__/**",
+    "**/__doc__/**",
+    "**/__docs__/**",
+    "**/__examples__/**",
+    "**/__helpers__/**",
+    "**/__helpers/**",
+    "**/__stories/**",
+    "**/__story__/**",
+    "**/__storybook__/**",
+    "**/__storybook/**",
+    "**/__test/**",
+    "**/__tests/**",
+    "**/__mock/**",
+    "**/__mocks/**",
+    "**/__fixture/**",
+    "**/__fixtures/**",
+    "**/__snapshot/**",
+    "**/__snapshots/**",
+    "**/__test/**",
+    "**/__tests/**",
+    "**/__mock/**",
+    "**/__mocks/**",
+    "**/__fixture/**",
+    "**/__fixtures/**",
+    "**/__snapshot/**",
+    "**/__snapshots/**",
+    "**/jsconfig.json/**"
+  ]
 }

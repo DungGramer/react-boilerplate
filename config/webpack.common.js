@@ -1,5 +1,11 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { paths, regex, resolvePath, formatFileName, postCSS, } = require('./utils');
+const {
+  paths,
+  regex,
+  resolvePath,
+  formatFileName,
+  postCSS,
+} = require('./utils');
 
 const moduleClassName = '[name]__[local]--[hash:base64:5]';
 
@@ -53,12 +59,20 @@ module.exports = {
       {
         test: regex.js,
         exclude: regex.nodeModule,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            configFile: resolvePath("config/babel.config.js"),
+        use: [
+          {
+            loader: 'esbuild-loader',
+            options: {
+              target: 'es2015',
+            },
           },
-        },
+          {
+            loader: 'babel-loader',
+            options: {
+              configFile: resolvePath('config/babel.config.js'),
+            },
+          },
+        ],
       },
       {
         test: regex.css,
@@ -83,7 +97,6 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
               importLoaders: 1,
               sourceMap: true,
               modules: {
@@ -118,7 +131,6 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
               sourceMap: true,
               importLoaders: 3,
               modules: {
